@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Отзывы на карте</title>
+  <link rel="stylesheet" href="./index.css">
+</head>
+
+<body>
+  <div id="map"></div>
+  <script type="template" id="addFormTemplate">
+      <div class="review-list"></div>
+      <div class="addMark" data-role="review-form">
+        <div class="addMark__title">Отзыв:</div>
+        <input type="text" placeholder="Укажите ваше имя" class="addMark__name input" data-role="review-name"></input>
+        <input type="text" placeholder="Укажите место" class="addMark__place input" data-role="review-place"></input>
+        <textarea placeholder="Оставить отзыв" class="addMark__review input input--textarea" data-role="review-text"></textarea>
+        <button class="addMark__button" data-role="review-add">Добавить</button>
+        <span class="form-error"></span>
+      </div>
+  </script>
+  <!-- <script src="https://api-maps.yandex.ru/2.1/?apikey=ваш API-ключ&lang=ru_RU"></script> -->
+  <script src="./index.js"></script>
+</body>
+
+</html>
