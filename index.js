@@ -18,11 +18,6 @@ class GeoReview {
     }
 
     async callApi(method, body = {}) {
-        // const res = await fetch(`/geo-review-3/${method}`, {
-        //     method: 'post',
-        //     body: JSON.stringify(body),
-        // });
-        // return await res.json();
         if (method === "coords") {
             const result = [];
             for (let a in localStorage) {
@@ -37,7 +32,6 @@ class GeoReview {
                     }
                 }
                 catch (e) {
-                    //console.log(e.message);
                 }
             }
             return result;
@@ -45,11 +39,9 @@ class GeoReview {
         if (method === "list") {
             const reviews = localStorage.getItem(JSON.stringify(body.coords));
             if (!reviews) return [];
-            console.log(reviews);
             return JSON.parse(reviews);
         }
-        if (method === "add") {
-
+        if (method === "add") {            
             const reviewsCoord = localStorage.getItem(JSON.stringify(body.coords));
             if (!reviewsCoord) {
                 const arr = [];
@@ -60,8 +52,6 @@ class GeoReview {
                 reviewCoord.push(body.review);
                 localStorage.setItem(JSON.stringify(body.coords), JSON.stringify(reviewCoord));
             }
-
-            //console.log(JSON.stringify(body.coords), JSON.stringify(body.review));
         }
 
 
@@ -93,24 +83,35 @@ class GeoReview {
 
         const list = await this.callApi('list', { coords });
         const form = this.createForm(coords, list);
-        this.map.openBalloon(coords, form.innerHTML);
+        this.map.openBalloon(coords, form.innerHTML,{
+            interactivityModel: 'default#silent'
+    });
         //this.map.setBalloonContent(form.innerHTML);
     }
 
     async onDocumentClick(e) {
         if (e.target.dataset.role === 'review-add') {
             const reviewForm = document.querySelector('[data-role=review-form]');
+            const reviewName = document.querySelector('[data-role=review-name]').value;
+            const reviewPlace = document.querySelector('[data-role=review-place]').value;
+            const reviewText = document.querySelector('[data-role=review-text]').value;
+
+            
+
             const coords = JSON.parse(reviewForm.dataset.coords);
             const data = {
                 coords,
                 review: {
-                    name: document.querySelector('[data-role=review-name]').value,
-                    place: document.querySelector('[data-role=review-place]').value,
-                    text: document.querySelector('[data-role=review-text]').value,
+                    name: reviewName,
+                    place: reviewPlace,
+                    text: reviewText,
                 },
             };
 
             try {
+                if (!reviewName || !reviewPlace || !reviewText) {
+                    throw new Error("Заполните все поля");
+                }
                 await this.callApi('add', data);
                 this.map.createPlacemark(coords);
                 this.map.closeBalloon();

@@ -26,7 +26,7 @@ body,
 
 .review-list {
   max-height: 100px;
-  overflow: scroll;
+  overflow: auto;
   font-family: Arial;
   font-style: normal;
   font-weight: normal;
@@ -98,4 +98,8 @@ body,
   color: #FFFFFF;
   display: block;
   border: 1px solid transparent;
+}
+
+.form-error {
+  color: red;
 }
